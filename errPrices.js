@@ -102,7 +102,7 @@ const filterPrice = async (p) => {
       }
     })
     .catch((err) => {
-      console.log("Error...");
+      console.log("Error: ", err);
       searchErr();
     });
 };
