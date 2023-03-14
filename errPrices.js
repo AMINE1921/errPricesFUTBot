@@ -4,8 +4,13 @@ const dotenv = require("dotenv").config();
 const cloudscraper = require("cloudscraper");
 const playersDB = fs.readFileSync("playersDB.json");
 const listPlayers = JSON.parse(playersDB);
-const logs = fs.readFileSync("logsErr.json");
-let logsErr = JSON.parse(logs);
+let logsErr;
+try {
+  const stats = fs.statSync("logsErr.json");
+  logsErr = stats.size === 0 ? [] : JSON.parse(fs.readFileSync("logsErr.json"));
+} catch (err) {
+  logsErr = [];
+}
 
 const platform = "ps";
 const valueBenef = 100;
@@ -51,12 +56,12 @@ const filterPrice = async (p) => {
         updated[1] === "second" ||
         ((updated[1] === "mins" || updated[1] === "min") &&
           Number(updated[0]) <= 9);
-      function addZero(i) {
+      const addZero = (i) => {
         if (i < 10) {
           i = "0" + i;
         }
         return i;
-      }
+      };
       const d = new Date();
       let h = addZero(d.getHours());
       let m = addZero(d.getMinutes());
